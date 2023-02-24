@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title> th:text="${item.title}"</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<body>
+<div th:replace="layouts/header :: header"></div>
+
+<main class="container">
+    <div class="items" >
+        <div>
+            <img th:src="${item.image}" th:alt="${item.title}">
+            <!--                <img th:src="${el.image}" th:alt="${el.title}">-->
+            <h3 th:text="${item.title}" />
+            <p th:text="${item.info}" /><br>
+            <p>Автор <b th:text = "${item.user.username}"/></p>
+            <p>email: <b th:text = "${item.user.email}"/></p>
+            <span th:text="${item.price} + '$'" />
+        </div>
+    </div>
+
+    <a th:href="'/item/' + ${item.id} + '/update'" class="edit-btn"
+        sec:authorize="hasAuthority('USER') || hasAuthority('ADMIN')">Редактировать</a>
+    <form method="post" th:action="@{'/item/' + ${item.id} + '/delete'}" sec:authorize="hasAuthority('ADMIN')">
+        <button type="submit">Удалить</button>
+    </form>
+ </main>
+<div th:replace="layouts/footer :: footer"></div>
+</body>
+</html>
